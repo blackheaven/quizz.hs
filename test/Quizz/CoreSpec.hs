@@ -37,9 +37,9 @@ spec = do
       it "No answer" $ do
         (length . answers) (Answers []) `shouldBe` 0
       it "One answer" $ do
-        (length . answers) (Answers [1]) `shouldBe` 1
-      it "Two answers" $ do
-        (length . answers) (Answers [1, 4]) `shouldBe` 2
+        (length . answers) (Answers [True]) `shouldBe` 1
+      it "Four answers" $ do
+        (length . answers) (Answers [True, False, False, True]) `shouldBe` 4
 
   describe "Corrections datatype" $ do
     describe "corrections" $ do
@@ -51,12 +51,12 @@ spec = do
         (length . corrections) (Corrections [Wrong, Missed]) `shouldBe` 2
     describe "correct" $ do
       it "One proposition, one good answer, correctly answered" $ do
-        correct (Question "A" [Proposition "A" True]) (Answers [1])`shouldBe` (Corrections [Correct])
+        correct (Question "A" [Proposition "A" True]) (Answers [True])`shouldBe` (Corrections [Correct])
       it "One proposition, one good answer, not answered" $ do
-        correct (Question "A" [Proposition "A" True]) (Answers [])`shouldBe` (Corrections [Missed])
+        correct (Question "A" [Proposition "A" True]) (Answers [False])`shouldBe` (Corrections [Missed])
       it "One proposition, no good answer, badly answered" $ do
-        correct (Question "A" [Proposition "A" False]) (Answers [1])`shouldBe` (Corrections [Wrong])
+        correct (Question "A" [Proposition "A" False]) (Answers [True])`shouldBe` (Corrections [Wrong])
       it "One proposition, no good answer, correctly answered" $ do
-        correct (Question "A" [Proposition "A" False]) (Answers [])`shouldBe` (Corrections [NotCheckedNotAnswer])
+        correct (Question "A" [Proposition "A" False]) (Answers [False])`shouldBe` (Corrections [NotCheckedNotAnswer])
       it "Four propositions, two good answers, one correctly answered, one badly answered, one forgot" $ do
-        correct (Question "A" [Proposition "A" True, Proposition "A" True, Proposition "A" False, Proposition "A" False]) (Answers [1, 3])`shouldBe` (Corrections [Correct, Missed, Wrong, NotCheckedNotAnswer])
+        correct (Question "A" [Proposition "A" True, Proposition "A" True, Proposition "A" False, Proposition "A" False]) (Answers [True, False, True, False])`shouldBe` (Corrections [Correct, Missed, Wrong, NotCheckedNotAnswer])
